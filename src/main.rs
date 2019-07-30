@@ -80,6 +80,11 @@ fn main() {
         let Wall{ x, y, direction } = walls.pop().unwrap();
         let (nx, ny) = direction.apply(x, y);
 
+        let (set1, set2) = (sets.find((x * y) as u8), sets.find((nx * ny) as u8));
+
+        
+
+
         println!("X: {} Y: {} NX: {} NY: {}", x, y, nx, ny);
     }
 
