@@ -14,6 +14,28 @@ enum Direction {
     W,
 }
 
+impl Direction {
+    fn opposite(self) -> Direction {
+        use Direction::*;
+        match self {
+            N => S,
+            E => W,
+            S => N,
+            W => E,
+        }
+    }
+
+    fn apply(&self, x: usize, y: usize) -> (usize, usize) {
+        use Direction::*;
+        match self {
+            N => (x, y + 1),
+            E => (x + 1, y),
+            S => (x, y - 1),
+            W => (x - 1, y),
+        }
+    }
+}
+
 #[derive(Debug)]
 struct Wall {
     x: usize,
@@ -31,7 +53,7 @@ impl Wall {
     }
 }
 
-fn printGrid(grid: &Vec<Vec<isize>>) {
+fn print_grid(grid: &Vec<Vec<isize>>) {
     for line in grid {
         println!("{:?}", line);
     }
@@ -54,7 +76,14 @@ fn main() {
 
     walls.shuffle(&mut thread_rng());
 
+    while !walls.is_empty() {
+        let Wall{ x, y, direction } = walls.pop().unwrap();
+        let (nx, ny) = direction.apply(x, y);
+
+        println!("X: {} Y: {} NX: {} NY: {}", x, y, nx, ny);
+    }
+
     println!("{:?}", walls);
 
-    printGrid(&grid)
+    print_grid(&grid)
 }
